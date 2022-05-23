@@ -1,2 +1,2 @@
 export * from './faculty';
-export * from './get-all-faculty';
+export * from '../queries/get-all-faculty';
