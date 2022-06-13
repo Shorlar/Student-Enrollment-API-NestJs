@@ -10,9 +10,9 @@ import {
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
 import {
   CreateFacultyCommand,
-  GetAllFacultyQuery,
 } from 'src/enrollment/commands';
 import { createFacultyDto } from 'src/enrollment/DTO';
+import { GetAllFacultyQuery } from 'src/enrollment/queries';
 
 @Controller('faculty')
 export class FacultyController {

@@ -18,7 +18,7 @@ export class HttpErrorFilter implements ExceptionFilter {
     const ctx = host.switchToHttp();
     const request = ctx.getRequest<Request>();
     const response = ctx.getResponse<Response>();
-    const status = exception.getStatus() || HttpStatus.INTERNAL_SERVER_ERROR;
+    const status = HttpStatus.INTERNAL_SERVER_ERROR;
     const errorMessage = exception.message || 'Internal Server Error';
 
     const errorResponseFormat = {

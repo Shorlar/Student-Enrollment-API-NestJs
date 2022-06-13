@@ -30,17 +30,19 @@ export class Enrollment {
   guardianName: string;
 
   @Column()
-  studentPhoneNumber: number;
+  studentPhoneNumber: string;
 
   @Column({ unique: true })
   email: string;
 
   @ManyToOne(() => Department, (department) => department.enrollment, {
-    eager: true,
-  })
+    eager: true, nullable: false
+  },)
   department: Department;
 
-  @ManyToOne(() => Faculty, (faculty) => faculty.enrollment, { eager: true })
+  @ManyToOne(() => Faculty, (faculty) => faculty.enrollment, {
+    eager: true, nullable: false
+  })
   faculty: Faculty;
 
   @CreateDateColumn({ type: 'timestamp' })
