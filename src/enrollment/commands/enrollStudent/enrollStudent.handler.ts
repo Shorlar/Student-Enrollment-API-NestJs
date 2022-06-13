@@ -1,6 +1,5 @@
 import { HttpException, HttpStatus, Logger } from '@nestjs/common';
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
-import { InjectRepository } from '@nestjs/typeorm';
 import {
   Department,
   Enrollment,
