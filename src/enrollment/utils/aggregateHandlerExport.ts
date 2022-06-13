@@ -1,4 +1,9 @@
-import { GetAllFacultyQueryHandler } from "../commands";
-import { CreateFacultyCommandHandler } from "../commands/faculty/createFaculty.handler";
+import { EnrollStudentCommandHandler } from '../commands/enrollStudent/enrollStudent.handler';
+import { CreateFacultyCommandHandler } from '../commands/faculty/createFaculty.handler';
+import { GetAllFacultyQueryHandler } from '../queries';
 
-export const FacultyHandlers = [CreateFacultyCommandHandler, GetAllFacultyQueryHandler]
+export const FacultyHandlers = [
+  CreateFacultyCommandHandler,
+  GetAllFacultyQueryHandler,
+];
+export const EnrollmentHandlers = [EnrollStudentCommandHandler]
