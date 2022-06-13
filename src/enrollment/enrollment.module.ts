@@ -6,19 +6,23 @@ import { Enrollment, Faculty, Student } from './entity';
 import { FacultyController } from './controller/faculty/faculty.controller';
 import { DepartmentController } from './controller/department/department.controller';
 import { CqrsModule } from '@nestjs/cqrs';
-import { FacultyHandlers, EnrollmentHandlers } from './utils/aggregateHandlerExport';
+import {
+  FacultyHandlers,
+  EnrollmentHandlers,
+  DepartmentHandlers,
+} from './utils/aggregateHandlerExport';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Enrollment, Student, Faculty]), CqrsModule],
+  imports: [
+    TypeOrmModule.forFeature([Enrollment, Student, Faculty]),
+    CqrsModule,
+  ],
   controllers: [
     EnrollmentController,
     StudentController,
     FacultyController,
     DepartmentController,
   ],
-  providers: [
-    ...FacultyHandlers,
-    ...EnrollmentHandlers
-  ]
+  providers: [...FacultyHandlers, ...EnrollmentHandlers, ...DepartmentHandlers],
 })
 export class EnrollmentModule {}
