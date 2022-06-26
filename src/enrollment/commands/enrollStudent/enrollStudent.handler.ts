@@ -8,6 +8,7 @@ import {
 } from 'src/enrollment/entity';
 import { Connection } from 'typeorm';
 import { EnrollStudentCommand } from './enrollStudent.command';
+import * as bcrypt from 'bcrypt';
 
 @CommandHandler(EnrollStudentCommand)
 export class EnrollStudentCommandHandler
@@ -34,7 +35,6 @@ export class EnrollStudentCommandHandler
         faculty,
       },
     } = command;
-
     const connect = await this.connection.createQueryRunner();
     await connect.connect();
     await connect.startTransaction();
@@ -56,9 +56,21 @@ export class EnrollStudentCommandHandler
         department: dept,
         faculty: facultyEntity,
       });
-      
+      const hashedStudentPassword = await bcrypt.hash(
+        lastName.toLowerCase(),
+        10,
+      );
+      const student = await connect.manager.save(Student, {
+        firstName,
+        lastName,
+        otherName,
+        department: dept,
+        email,
+        password: hashedStudentPassword,
+      });
       this.logger.log(`Enrolled Student: ${JSON.stringify(enrolledStudent)}`);
       await connect.commitTransaction();
+      return `Student with enrollment ID ${enrolledStudent.id} and student ID ${student.id} has been created`;
     } catch (error) {
       await connect.rollbackTransaction();
       this.logger.log(`Error: ${JSON.stringify(error)}`);
