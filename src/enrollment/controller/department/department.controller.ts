@@ -7,6 +7,8 @@ import {
   Body,
   Get,
   Query,
+  Param,
+  ParseIntPipe,
 } from '@nestjs/common';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
 import { CreateDepartmentCommand } from 'src/enrollment/commands';
@@ -33,7 +35,7 @@ export class DepartmentController {
   }
 
   @Get('/deptInAFaculty/:id')
-  async getDeptbyFacultyId(@Query('id') id: number){
+  async getDeptbyFacultyId(@Param('id', ParseIntPipe) id: number){
     this.logger.log('In Get department by faculty ID')
     this.logger.log(`Calling queryBus.execute with an instance of ${GetDepartmentByFacultyId.name}`)
     return await this.queryBus.execute(new GetDepartmentByFacultyId(id))
