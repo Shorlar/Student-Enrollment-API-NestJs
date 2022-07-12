@@ -6,12 +6,16 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { EnrollmentModule } from './enrollment/enrollment.module';
 import { HttpErrorFilter } from './enrollment/utils';
+import { AuthModule } from './auth/auth.module';
+import { StudentModule } from './student/student.module';
 
 @Module({
   imports: [
     EnrollmentModule,
     ConfigModule.forRoot({ isGlobal: true }),
     TypeOrmModule.forRoot(),
+    AuthModule,
+    StudentModule,
   ],
   controllers: [AppController],
   providers: [AppService,
