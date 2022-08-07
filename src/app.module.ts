@@ -18,10 +18,12 @@ import { StudentModule } from './student/student.module';
     StudentModule,
   ],
   controllers: [AppController],
-  providers: [AppService,
-  {
-    provide: APP_FILTER,
-    useClass: HttpErrorFilter
-  }],
+  providers: [
+    AppService,
+    {
+      provide: APP_FILTER,
+      useClass: HttpErrorFilter,
+    },
+  ],
 })
 export class AppModule {}

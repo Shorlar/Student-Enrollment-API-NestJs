@@ -1,4 +1,4 @@
-import { HttpException, HttpStatus, Logger } from '@nestjs/common';
+import { HttpException, HttpStatus, Inject, Logger } from '@nestjs/common';
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import {
   Department,
@@ -9,13 +9,18 @@ import {
 import { Connection } from 'typeorm';
 import { EnrollStudentCommand } from './enrollStudent.command';
 import * as bcrypt from 'bcrypt';
+import { ClientProxy } from '@nestjs/microservices';
+import { StudentNotificationDto } from 'src/enrollment/DTO';
 
 @CommandHandler(EnrollStudentCommand)
 export class EnrollStudentCommandHandler
   implements ICommandHandler<EnrollStudentCommand>
 {
   private readonly logger: Logger;
-  constructor(private connection: Connection) {
+  constructor(
+    private connection: Connection,
+    @Inject('NOTIFICATION') private readonly notificationService: ClientProxy,
+  ) {
     this.logger = new Logger(EnrollStudentCommandHandler.name);
   }
 
@@ -70,6 +75,8 @@ export class EnrollStudentCommandHandler
       });
       this.logger.log(`Enrolled Student: ${JSON.stringify(enrolledStudent)}`);
       await connect.commitTransaction();
+      const studentNotification = new StudentNotificationDto(student);
+      this.notificationService.emit('student_created', studentNotification);
       return `Student with enrollment ID ${enrolledStudent.id} and student ID ${student.id} has been created`;
     } catch (error) {
       await connect.rollbackTransaction();
